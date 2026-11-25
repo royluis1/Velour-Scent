@@ -11,7 +11,13 @@ CREATE TABLE IF NOT EXISTS products (
   price NUMERIC(10, 2) NOT NULL CHECK (price > 0),
   notes JSONB NOT NULL DEFAULT '{}'::jsonb,
   "desc" TEXT NOT NULL DEFAULT '',
-  image TEXT
+  image TEXT,
+  concentration TEXT,
+  gender TEXT,
+  year INTEGER,
+  longevity TEXT,
+  sillage TEXT,
+  ingredients TEXT
 );
 
 INSERT INTO categories (slug, name, "desc") VALUES
@@ -20,13 +26,16 @@ INSERT INTO categories (slug, name, "desc") VALUES
   ('oriental', 'Oriental', 'Ámbar, especias tibias y resinas profundas.')
 ON CONFLICT (slug) DO NOTHING;
 
-INSERT INTO products (id, name, category, price, notes, "desc") VALUES
-  (1, 'Noir Velours', 'oriental', 185, '{"top":"Pimienta rosa","heart":"Rosa negra","base":"Ámbar"}', 'Un oriental nocturno de textura aterciopelada. Abre con especias suaves y se asienta en un fondo cálido de ámbar y vainilla oscura.'),
-  (2, 'Maison Santal', 'amaderado', 210, '{"top":"Bergamota","heart":"Sándalo","base":"Cedro"}', 'Sándalo cremoso sobre una base de cedro seco. Sobrio, cercano a la piel y de larga estela.'),
-  (3, 'Éclat de Jasmin', 'floral', 165, '{"top":"Pera","heart":"Jazmín","base":"Almizcle"}', 'Jazmín luminoso con un corazón cremoso y un fondo limpio de almizcle blanco.'),
-  (4, 'Ombre Vetiver', 'amaderado', 195, '{"top":"Pomelo","heart":"Vetiver","base":"Pachulí"}', 'Vetiver terroso y fresco, con un fondo de pachulí que se vuelve más profundo con las horas.'),
-  (5, 'Rose Cendrée', 'floral', 175, '{"top":"Lichi","heart":"Rosa de mayo","base":"Incienso"}', 'Una rosa envuelta en incienso, entre lo romántico y lo ceremonial.'),
-  (6, 'Ambre Sombre', 'oriental', 220, '{"top":"Cardamomo","heart":"Labdanum","base":"Vainilla"}', 'Ámbar resinoso y especiado, de una calidez densa que se queda en la ropa.')
+INSERT INTO products (
+  id, name, category, price, notes, "desc", image,
+  concentration, gender, year, longevity, sillage, ingredients
+) VALUES
+  (1, 'Noir Velours', 'oriental', 185, '{"top":"Pimienta rosa","heart":"Rosa negra","base":"Ámbar"}', 'Un oriental nocturno de textura aterciopelada. Abre con especias suaves y se asienta en un fondo cálido de ámbar y vainilla oscura.', '/img/noir-velours.jpg', 'Eau de Parfum', 'Unisex', 2025, '8–10 h', 'Moderada', 'Pimienta rosa, rosa negra y ámbar sobre una base cálida de vainilla oscura.'),
+  (2, 'Maison Santal', 'amaderado', 210, '{"top":"Bergamota","heart":"Sándalo","base":"Cedro"}', 'Sándalo cremoso sobre una base de cedro seco. Sobrio, cercano a la piel y de larga estela.', '/img/maison-santal.jpg', 'Eau de Parfum', 'Unisex', 2025, '8–10 h', 'Moderada', 'Bergamota fresca, sándalo cremoso y cedro seco con matices amaderados.'),
+  (3, 'Éclat de Jasmin', 'floral', 165, '{"top":"Pera","heart":"Jazmín","base":"Almizcle"}', 'Jazmín luminoso con un corazón cremoso y un fondo limpio de almizcle blanco.', '/img/eclat-de-jasmin.jpg', 'Eau de Parfum', 'Unisex', 2025, '8–10 h', 'Moderada', 'Pera jugosa y jazmín blanco sobre un fondo suave de almizcle limpio.'),
+  (4, 'Ombre Vetiver', 'amaderado', 195, '{"top":"Pomelo","heart":"Vetiver","base":"Pachulí"}', 'Vetiver terroso y fresco, con un fondo de pachulí que se vuelve más profundo con las horas.', '/img/ombre-vetiver.jpg', 'Eau de Parfum', 'Unisex', 2025, '8–10 h', 'Moderada', 'Pomelo brillante, vetiver terroso y pachulí de carácter profundo.'),
+  (5, 'Rose Cendrée', 'floral', 175, '{"top":"Lichi","heart":"Rosa de mayo","base":"Incienso"}', 'Una rosa envuelta en incienso, entre lo romántico y lo ceremonial.', '/img/rose-cendree.jpg', 'Eau de Parfum', 'Unisex', 2025, '8–10 h', 'Moderada', 'Lichi delicado y rosa de mayo envueltos en un velo de incienso.'),
+  (6, 'Ambre Sombre', 'oriental', 220, '{"top":"Cardamomo","heart":"Labdanum","base":"Vainilla"}', 'Ámbar resinoso y especiado, de una calidez densa que se queda en la ropa.', '/img/ambre-sombre.jpg', 'Eau de Parfum', 'Unisex', 2025, '8–10 h', 'Moderada', 'Cardamomo cálido, ládano resinoso y vainilla en un acorde ambarado.')
 ON CONFLICT (id) DO NOTHING;
 
 SELECT setval(

@@ -38,6 +38,7 @@
 .filters button:hover,.filters button.active{color:var(--vs-gold);border-color:var(--vs-gold)}
 .detail{display:grid;grid-template-columns:1.1fr 1fr;gap:80px;align-items:start}
 .detail__media{aspect-ratio:4/5;background:var(--vs-velvet);border:1px solid var(--vs-line);border-radius:var(--vs-r);display:grid;place-items:center}
+.detail__media img{width:100%;height:100%;object-fit:cover}
 .detail__info h1{margin:16px 0 24px}
 .detail__price{font-family:var(--vs-serif);font-size:1.8rem;color:var(--vs-gold);margin-bottom:28px}
 .detail__desc{color:var(--vs-mute);line-height:1.8;margin-bottom:36px;max-width:60ch}
@@ -45,6 +46,14 @@
 .notes div{padding:24px 12px;text-align:center;font-family:var(--vs-serif);font-size:1.15rem}
 .notes div+div{border-left:1px solid var(--vs-line)}
 .notes .label{display:block;margin-bottom:8px}
+.detail__facts{border-block:1px solid var(--vs-line);padding:24px 0;margin:-8px 0 32px}
+.detail__facts h2,.detail__ingredients h2{font-size:1.55rem;margin:0 0 18px}
+.detail__facts dl{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:16px 20px}
+.detail__facts dl>div{border-top:1px solid var(--vs-line);padding-top:12px}
+.detail__facts dt{display:block;margin-bottom:8px}
+.detail__facts dd{font-family:var(--vs-serif);font-size:1.2rem;color:var(--vs-ivory)}
+.detail__ingredients{margin-bottom:32px}
+.detail__ingredients p{max-width:60ch;font-family:var(--vs-serif);font-size:1.2rem;line-height:1.7;color:var(--vs-mute)}
 .sizes{display:flex;gap:12px;margin-bottom:32px}
 .size{padding:12px 20px;border:1px solid var(--vs-line-strong);background:none;color:var(--vs-ivory);cursor:pointer;border-radius:var(--vs-r);transition:all var(--vs-ease);font-family:var(--vs-sans)}
 .size:hover,.size.active{border-color:var(--vs-gold);color:var(--vs-gold)}

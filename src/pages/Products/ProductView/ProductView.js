@@ -6,6 +6,7 @@ import { sizes, formatPrice } from '../../../utils/api';
 import { useCatalog } from '../../../context/CatalogContext';
 import useTitle from '../../../hooks/useTitle';
 import ProductCard from '../../../components/ProductCard';
+import ProductImage from '../../../components/ProductImage';
 import SectionHead from '../../../components/SectionHead';
 import './ProductView.css';
 
@@ -31,11 +32,18 @@ export default function ProductView() {
   }
 
   const related = getProducts(p.category).filter((x) => x.id !== p.id).slice(0, 3);
+  const facts = [
+    { label: 'Concentración', value: p.concentration },
+    { label: 'Género', value: p.gender },
+    { label: 'Año', value: p.year },
+    { label: 'Duración', value: p.longevity },
+    { label: 'Estela', value: p.sillage },
+  ].filter((fact) => fact.value !== null && fact.value !== undefined && String(fact.value).trim());
   return (
     <>
       <section className="section container detail reveal">
         <div className="detail__media">
-          {p.image ? <img src={p.image} alt={p.name} /> : <span className="mono">{p.name[0]}</span>}
+          <ProductImage image={p.image} name={p.name} />
         </div>
         <div className="detail__info">
           <Link to={`/categoria/${p.category}`} className="eyebrow">{getCategory(p.category)?.name}</Link>
@@ -47,6 +55,25 @@ export default function ProductView() {
             <div><span className="label">Corazón</span>{p.notes.heart}</div>
             <div><span className="label">Fondo</span>{p.notes.base}</div>
           </div>
+          {facts.length > 0 && (
+            <section className="detail__facts" aria-labelledby="product-facts-title">
+              <h2 id="product-facts-title">Ficha</h2>
+              <dl>
+                {facts.map((fact) => (
+                  <div key={fact.label}>
+                    <dt className="label">{fact.label}</dt>
+                    <dd>{fact.value}</dd>
+                  </div>
+                ))}
+              </dl>
+            </section>
+          )}
+          {p.ingredients && p.ingredients.trim() && (
+            <section className="detail__ingredients" aria-labelledby="product-ingredients-title">
+              <h2 id="product-ingredients-title">Ingredientes</h2>
+              <p>{p.ingredients}</p>
+            </section>
+          )}
           <div className="sizes">
             {sizes.map((s) => <button key={s} className={`size ${size === s ? 'active' : ''}`} onClick={() => setSize(s)}>{s} ml</button>)}
           </div>

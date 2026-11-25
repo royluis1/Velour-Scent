@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import { useCart } from '../../context/CartContext';
 import { formatPrice } from '../../utils/api';
 import useTitle from '../../hooks/useTitle';
+import ProductImage from '../../components/ProductImage';
 import './Bolsa.css';
 
 export default function Bolsa() {
@@ -28,7 +29,7 @@ export default function Bolsa() {
       <div className="bag">
         {items.map((x) => (
           <div className="bag__row" key={`${x.id}-${x.size}`}>
-            <div className="bag__media">{x.image ? <img src={x.image} alt={x.name} /> : <span className="mono" style={{ fontSize: '3rem' }}>{x.name[0]}</span>}</div>
+            <div className="bag__media"><ProductImage image={x.image} name={x.name} fallbackStyle={{ fontSize: '3rem' }} /></div>
             <div className="bag__info"><h3>{x.name}</h3><p className="label">{x.size} ml</p></div>
             <div className="bag__qty">
               <button onClick={() => setQty(x.id, x.size, x.qty - 1)} aria-label="Menos">−</button>

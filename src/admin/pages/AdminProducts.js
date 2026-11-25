@@ -5,6 +5,7 @@ import { formatPrice } from '../../utils/api';
 const emptyForm = {
   name: '', category: '', price: '', desc: '',
   notes: { top: '', heart: '', base: '' }, image: '',
+  concentration: '', gender: '', year: '', longevity: '', sillage: '', ingredients: '',
 };
 
 export default function AdminProducts() {
@@ -24,6 +25,12 @@ export default function AdminProducts() {
       desc: product.desc || '',
       notes: { top: product.notes?.top || '', heart: product.notes?.heart || '', base: product.notes?.base || '' },
       image: product.image || '',
+      concentration: product.concentration || '',
+      gender: product.gender || '',
+      year: product.year ?? '',
+      longevity: product.longevity || '',
+      sillage: product.sillage || '',
+      ingredients: product.ingredients || '',
     });
     setError('');
   };
@@ -101,6 +108,19 @@ export default function AdminProducts() {
         <label>Notas de salida<input value={form.notes.top} onChange={(event) => setForm({ ...form, notes: { ...form.notes, top: event.target.value } })} /></label>
         <label>Notas de corazón<input value={form.notes.heart} onChange={(event) => setForm({ ...form, notes: { ...form.notes, heart: event.target.value } })} /></label>
         <label>Notas de fondo<input value={form.notes.base} onChange={(event) => setForm({ ...form, notes: { ...form.notes, base: event.target.value } })} /></label>
+        <label>Concentración<input value={form.concentration} onChange={(event) => setForm({ ...form, concentration: event.target.value })} /></label>
+        <label>Género
+          <select value={form.gender} onChange={(event) => setForm({ ...form, gender: event.target.value })}>
+            <option value="">Sin especificar</option>
+            <option value="Femenino">Femenino</option>
+            <option value="Masculino">Masculino</option>
+            <option value="Unisex">Unisex</option>
+          </select>
+        </label>
+        <label>Año<input type="number" step="1" value={form.year} onChange={(event) => setForm({ ...form, year: event.target.value })} /></label>
+        <label>Duración<input value={form.longevity} onChange={(event) => setForm({ ...form, longevity: event.target.value })} /></label>
+        <label>Estela<input value={form.sillage} onChange={(event) => setForm({ ...form, sillage: event.target.value })} /></label>
+        <label style={{ gridColumn: '1 / -1' }}>Ingredientes<textarea value={form.ingredients} onChange={(event) => setForm({ ...form, ingredients: event.target.value })} /></label>
         {error && <p role="alert" style={{ gridColumn: '1 / -1' }}>{error}</p>}
         <div style={{ gridColumn: '1 / -1' }}>
           <button type="submit">Guardar</button>{' '}
