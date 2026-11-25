@@ -1,12 +1,15 @@
 import useReveal from '../../../hooks/useReveal';
 import { useState } from 'react';
-import { getProducts, getCategories } from '../../../utils/api';
+import { useCatalog } from '../../../context/CatalogContext';
+import useTitle from '../../../hooks/useTitle';
 import ProductCard from '../../../components/ProductCard';
 import SectionHead from '../../../components/SectionHead';
 import './ProductsList.css';
 
 export default function ProductsList() {
   useReveal();
+  useTitle('Colección');
+  const { getProducts, categories } = useCatalog();
   const [active, setActive] = useState('');
   const items = getProducts(active);
   return (
@@ -14,7 +17,7 @@ export default function ProductsList() {
       <SectionHead eyebrow="Colección" title="Todos los perfumes" />
       <div className="filters">
         <button className={!active ? 'active' : ''} onClick={() => setActive('')}>Todos</button>
-        {getCategories().map((c) => (
+        {categories.map((c) => (
           <button key={c.slug} className={active === c.slug ? 'active' : ''} onClick={() => setActive(c.slug)}>{c.name}</button>
         ))}
       </div>

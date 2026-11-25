@@ -1,13 +1,17 @@
 import useReveal from '../../hooks/useReveal';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { getProducts, getCategories, heroImage } from '../../utils/api';
+import { heroImage } from '../../utils/api';
+import { useCatalog } from '../../context/CatalogContext';
+import useTitle from '../../hooks/useTitle';
 import ProductCard from '../../components/ProductCard';
 import SectionHead from '../../components/SectionHead';
 import './Home.css';
 
 export default function Home() {
   useReveal();
+  useTitle('');
+  const { getProducts, categories } = useCatalog();
   const [email, setEmail] = useState('');
   const [sent, setSent] = useState(false);
   return (
@@ -34,7 +38,7 @@ export default function Home() {
       </section>
 
       <section className="container home-cats reveal">
-        {getCategories().map((c) => (
+        {categories.map((c) => (
           <Link key={c.slug} to={`/categoria/${c.slug}`} className="home-cat">
             <h3>{c.name}</h3>
             <span className="label">Explorar</span>

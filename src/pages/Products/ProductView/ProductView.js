@@ -2,7 +2,9 @@ import useReveal from '../../../hooks/useReveal';
 import { useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { useCart } from '../../../context/CartContext';
-import { getProduct, getProducts, getCategory, sizes, formatPrice } from '../../../utils/api';
+import { sizes, formatPrice } from '../../../utils/api';
+import { useCatalog } from '../../../context/CatalogContext';
+import useTitle from '../../../hooks/useTitle';
 import ProductCard from '../../../components/ProductCard';
 import SectionHead from '../../../components/SectionHead';
 import './ProductView.css';
@@ -13,7 +15,9 @@ export default function ProductView() {
   const { add } = useCart();
   const [size, setSize] = useState(50);
   const [added, setAdded] = useState(false);
+  const { getProduct, getProducts, getCategory } = useCatalog();
   const p = getProduct(id);
+  useTitle(p ? p.name : 'Perfume no encontrado');
 
   if (!p) {
     return (
@@ -33,7 +37,7 @@ export default function ProductView() {
           {p.image ? <img src={p.image} alt={p.name} /> : <span className="mono">{p.name[0]}</span>}
         </div>
         <div className="detail__info">
-          <Link to={`/categoria/${p.category}`} className="eyebrow">{getCategory(p.category).name}</Link>
+          <Link to={`/categoria/${p.category}`} className="eyebrow">{getCategory(p.category)?.name}</Link>
           <h1>{p.name}</h1>
           <p className="detail__price">{formatPrice(p.price)}</p>
           <p className="detail__desc">{p.desc}</p>

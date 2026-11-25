@@ -1,0 +1,55 @@
+.admin{display:grid;grid-template-columns:240px 1fr;min-height:100vh;background:var(--vs-ink);color:var(--vs-ivory)}
+
+/* Sidebar */
+.admin__side{position:sticky;top:0;height:100vh;display:flex;flex-direction:column;gap:48px;padding:36px 28px;background:var(--vs-velvet);border-right:1px solid var(--vs-line)}
+.admin__logo{font-family:var(--vs-serif);font-size:1.3rem;letter-spacing:.28em;text-transform:uppercase}
+.admin__nav{display:flex;flex-direction:column;gap:6px}
+.admin__nav a{padding:12px 14px;border-left:1px solid transparent;font-size:.72rem;letter-spacing:.22em;text-transform:uppercase;color:var(--vs-mute);transition:all var(--vs-ease)}
+.admin__nav a:hover{color:var(--vs-ivory)}
+.admin__nav a.active{color:var(--vs-gold);border-left-color:var(--vs-gold);background:var(--vs-gold-soft)}
+.admin__back{margin-top:auto;font-size:.72rem;letter-spacing:.22em;text-transform:uppercase;color:var(--vs-faint)}
+.admin__back:hover{color:var(--vs-gold)}
+.admin__logout{margin-top:12px;text-align:left;padding:8px 0!important;border:0!important;color:var(--vs-faint)!important}
+.admin__logout:hover{color:var(--vs-gold)!important}
+
+/* Contenido */
+.admin__top{height:76px;display:flex;align-items:center;padding:0 var(--vs-pad);border-bottom:1px solid var(--vs-line)}
+.admin__content{padding:48px var(--vs-pad);max-width:1200px}
+.admin h1,.admin h2{margin-bottom:32px}
+.admin h3{font-family:var(--vs-serif)}
+
+/* Restyling por etiqueta: afecta lo que ya tengas dentro de .admin */
+.admin table{width:100%;border-collapse:collapse}
+.admin th{text-align:left;padding:14px 12px;border-bottom:1px solid var(--vs-line-strong)}
+.admin td{padding:18px 12px;border-bottom:1px solid var(--vs-line);color:var(--vs-ivory);font-size:.92rem}
+.admin tbody tr{transition:background var(--vs-ease)}
+.admin tbody tr:hover{background:var(--vs-velvet)}
+
+.admin input,.admin select,.admin textarea{background:transparent;border:0;border-bottom:1px solid var(--vs-line-strong);color:var(--vs-ivory);padding:12px 4px;font-family:var(--vs-sans);font-size:.95rem;border-radius:0;transition:border-color var(--vs-ease)}
+.admin input:focus,.admin select:focus,.admin textarea:focus{outline:none;border-color:var(--vs-gold)}
+.admin input::placeholder,.admin textarea::placeholder{color:var(--vs-faint)}
+.admin select option{background:var(--vs-velvet);color:var(--vs-ivory)}
+.admin label{display:block;margin-bottom:6px;font-size:.72rem;letter-spacing:.22em;text-transform:uppercase;color:var(--vs-mute)}
+
+.admin button{font-family:var(--vs-sans);text-transform:uppercase;letter-spacing:.18em;font-size:.72rem;padding:12px 24px;border:1px solid var(--vs-line-strong);background:transparent;color:var(--vs-ivory);border-radius:var(--vs-r);cursor:pointer;transition:all var(--vs-ease)}
+.admin button:hover{border-color:var(--vs-gold);color:var(--vs-gold)}
+.admin button[type="submit"],.admin .primary{background:var(--vs-ivory);color:var(--vs-ink);border-color:var(--vs-ivory)}
+.admin button[type="submit"]:hover,.admin .primary:hover{background:var(--vs-gold);border-color:var(--vs-gold);color:var(--vs-ink)}
+.admin .danger:hover{border-color:var(--vs-wine);color:#d99aa4}
+
+/* Tarjetas y métricas (cualquier clase que contenga "card" o "stat") */
+.admin [class*="card"],.admin [class*="stat"]{background:var(--vs-velvet);border:1px solid var(--vs-line);border-radius:var(--vs-r);padding:28px;box-shadow:none}
+.admin [class*="stat"] strong,.admin [class*="stat"] .value{display:block;font-family:var(--vs-serif);font-size:2.4rem;font-weight:500;color:var(--vs-gold);line-height:1.1}
+
+/* Insignias de estado */
+.admin .badge{display:inline-block;padding:4px 10px;border:1px solid var(--vs-line-strong);border-radius:var(--vs-r);font-size:.68rem;letter-spacing:.18em;text-transform:uppercase;color:var(--vs-mute)}
+.admin .badge--ok{border-color:var(--vs-gold);color:var(--vs-gold)}
+
+@media (max-width:860px){
+  .admin{grid-template-columns:1fr}
+  .admin__side{position:static;height:auto;flex-direction:row;flex-wrap:wrap;align-items:center;gap:16px;padding:20px var(--vs-pad)}
+  .admin__nav{flex-direction:row;flex-wrap:wrap;width:100%;order:3}
+  .admin__back{margin:0 0 0 auto}
+  .admin__logout{margin:0}
+  .admin table{display:block;overflow-x:auto}
+}

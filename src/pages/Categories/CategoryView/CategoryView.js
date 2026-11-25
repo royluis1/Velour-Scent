@@ -1,6 +1,7 @@
 import useReveal from '../../../hooks/useReveal';
 import { Link, useParams } from 'react-router-dom';
-import { getCategory, getProducts } from '../../../utils/api';
+import { useCatalog } from '../../../context/CatalogContext';
+import useTitle from '../../../hooks/useTitle';
 import ProductCard from '../../../components/ProductCard';
 import SectionHead from '../../../components/SectionHead';
 import './CategoryView.css';
@@ -8,7 +9,9 @@ import './CategoryView.css';
 export default function CategoryView() {
   useReveal();
   const { slug } = useParams();
+  const { getCategory, getProducts } = useCatalog();
   const cat = getCategory(slug);
+  useTitle(cat ? cat.name : 'Categoría no encontrada');
   if (!cat) {
     return (
       <section className="section container reveal" style={{ textAlign: 'center' }}>

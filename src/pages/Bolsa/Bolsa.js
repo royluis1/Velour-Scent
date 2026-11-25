@@ -1,10 +1,20 @@
 import { Link } from 'react-router-dom';
 import { useCart } from '../../context/CartContext';
 import { formatPrice } from '../../utils/api';
+import useTitle from '../../hooks/useTitle';
 import './Bolsa.css';
 
 export default function Bolsa() {
+  useTitle('Tu bolsa');
   const { items, remove, setQty, total, count } = useCart();
+  const buildMessage = () =>
+    'Hola, quiero hacer este pedido:\n' +
+    items.map((x) => `• ${x.name} ${x.size} ml × ${x.qty} — ${formatPrice(x.price * x.qty)}`).join('\n') +
+    `\n\nTotal: ${formatPrice(total)}`;
+  const checkout = () => {
+    const url = `https://wa.me/${process.env.REACT_APP_WHATSAPP}?text=${encodeURIComponent(buildMessage())}`;
+    window.open(url, '_blank', 'noopener');
+  };
   if (!count) return (
     <section className="section container" style={{ textAlign: 'center' }}>
       <h2>Tu bolsa está vacía</h2>
@@ -31,7 +41,7 @@ export default function Bolsa() {
         ))}
       </div>
       <div className="bag__foot"><span className="label">Total</span><span className="bag__total">{formatPrice(total)}</span></div>
-      <button className="btn btn--solid btn--block" style={{ marginTop: 32 }}>Finalizar compra</button>
+      <button className="btn btn--solid btn--block" style={{ marginTop: 32 }} onClick={checkout}>Finalizar compra</button>
     </section>
   );
 }

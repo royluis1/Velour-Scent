@@ -1,12 +1,12 @@
 // Datos de ejemplo. Para conectar a una API real, reemplazá estas funciones por fetch()
 // (por ejemplo la misma fuente que usa el panel admin) y hacelas async.
-const categories = [
+export const categories = [
   { slug: 'floral', name: 'Floral', desc: 'Pétalos, rocío y flores blancas al caer la tarde.' },
   { slug: 'amaderado', name: 'Amaderado', desc: 'Cedro, vetiver y humo suave de madera.' },
   { slug: 'oriental', name: 'Oriental', desc: 'Ámbar, especias tibias y resinas profundas.' },
 ];
 
-const products = [
+export const products = [
   { id: 1, name: 'Noir Velours', category: 'oriental', price: 185, notes: { top: 'Pimienta rosa', heart: 'Rosa negra', base: 'Ámbar' }, desc: 'Un oriental nocturno de textura aterciopelada. Abre con especias suaves y se asienta en un fondo cálido de ámbar y vainilla oscura.' },
   { id: 2, name: 'Maison Santal', category: 'amaderado', price: 210, notes: { top: 'Bergamota', heart: 'Sándalo', base: 'Cedro' }, desc: 'Sándalo cremoso sobre una base de cedro seco. Sobrio, cercano a la piel y de larga estela.' },
   { id: 3, name: 'Éclat de Jasmin', category: 'floral', price: 165, notes: { top: 'Pera', heart: 'Jazmín', base: 'Almizcle' }, desc: 'Jazmín luminoso con un corazón cremoso y un fondo limpio de almizcle blanco.' },
@@ -24,4 +24,6 @@ export const formatPrice = (n) => `USD ${n}`;
 
 // Foto del hero (ej: '/img/hero.jpg' en public/img/). Con null se usa el fondo degradado.
 export const heroImage = null;
-// Fotos de producto: agregá image: '/img/noir-velours.jpg' a cada producto de arriba.
+// Imágenes esperadas en public/img/: hero.jpg, noir-velours.jpg, maison-santal.jpg,
+// eclat-de-jasmin.jpg, ombre-vetiver.jpg, rose-cendree.jpg y ambre-sombre.jpg.
+// Usar retrato 4:5, fondo oscuro, frasco bien iluminado y sin fondo blanco.
