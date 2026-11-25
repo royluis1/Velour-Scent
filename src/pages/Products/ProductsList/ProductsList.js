@@ -9,7 +9,7 @@ import './ProductsList.css';
 export default function ProductsList() {
   useReveal();
   useTitle('Colección');
-  const { getProducts, categories } = useCatalog();
+  const { getProducts, categories, loading, error } = useCatalog();
   const [active, setActive] = useState('');
   const items = getProducts(active);
   return (
@@ -21,7 +21,9 @@ export default function ProductsList() {
           <button key={c.slug} className={active === c.slug ? 'active' : ''} onClick={() => setActive(c.slug)}>{c.name}</button>
         ))}
       </div>
-      <div className="grid">{items.map((p) => <ProductCard key={p.id} product={p} />)}</div>
+      {!loading && !error && (items.length
+        ? <div className="grid">{items.map((p) => <ProductCard key={p.id} product={p} />)}</div>
+        : <p style={{ textAlign: 'center', color: 'var(--vs-mute)' }}>No hay perfumes para mostrar.</p>)}
     </section>
   );
 }

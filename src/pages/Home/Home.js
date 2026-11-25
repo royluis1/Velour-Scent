@@ -11,7 +11,7 @@ import './Home.css';
 export default function Home() {
   useReveal();
   useTitle('');
-  const { getProducts, categories } = useCatalog();
+  const { getProducts, categories, loading, error } = useCatalog();
   const [email, setEmail] = useState('');
   const [sent, setSent] = useState(false);
   return (
@@ -30,7 +30,11 @@ export default function Home() {
 
       <section className="section container reveal">
         <SectionHead eyebrow="Selección" title="Esencias destacadas" />
-        <div className="grid">{getProducts().slice(0, 4).map((p) => <ProductCard key={p.id} product={p} />)}</div>
+        {!loading && !error && (
+          getProducts().length
+            ? <div className="grid">{getProducts().slice(0, 4).map((p) => <ProductCard key={p.id} product={p} />)}</div>
+            : <p style={{ textAlign: 'center', color: 'var(--vs-mute)' }}>Todavía no hay perfumes en la colección.</p>
+        )}
       </section>
 
       <section className="section container manifesto reveal">
@@ -38,7 +42,7 @@ export default function Home() {
       </section>
 
       <section className="container home-cats reveal">
-        {categories.map((c) => (
+        {!loading && !error && categories.map((c) => (
           <Link key={c.slug} to={`/categoria/${c.slug}`} className="home-cat">
             <h3>{c.name}</h3>
             <span className="label">Explorar</span>

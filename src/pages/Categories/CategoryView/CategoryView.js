@@ -9,11 +9,11 @@ import './CategoryView.css';
 export default function CategoryView() {
   useReveal();
   const { slug } = useParams();
-  const { getCategory, getProducts, loading } = useCatalog();
+  const { getCategory, getProducts, loading, error } = useCatalog();
   const cat = getCategory(slug);
-  useTitle(cat ? cat.name : loading ? '' : 'Categoría no encontrada');
+  useTitle(cat ? cat.name : loading ? '' : error ? 'Error al cargar categoría' : 'Categoría no encontrada');
+  if (loading || error) return null;
   if (!cat) {
-    if (loading) return <section className="section container"><p style={{ textAlign: 'center' }}>Cargando categoría...</p></section>;
     return (
       <section className="section container reveal" style={{ textAlign: 'center' }}>
         <h2>Esta categoría no existe</h2>
@@ -26,7 +26,9 @@ export default function CategoryView() {
     <section className="section container reveal">
       <SectionHead eyebrow="Categoría" title={cat.name} />
       <p className="cat-intro">{cat.desc}</p>
-      <div className="grid">{getProducts(slug).map((p) => <ProductCard key={p.id} product={p} />)}</div>
+      {getProducts(slug).length
+        ? <div className="grid">{getProducts(slug).map((p) => <ProductCard key={p.id} product={p} />)}</div>
+        : <p style={{ textAlign: 'center', color: 'var(--vs-mute)' }}>Todavía no hay perfumes en esta categoría.</p>}
     </section>
   );
 }

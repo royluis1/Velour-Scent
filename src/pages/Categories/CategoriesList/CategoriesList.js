@@ -8,11 +8,11 @@ import './CategoriesList.css';
 export default function CategoriesList() {
   useReveal();
   useTitle('Categorías');
-  const { categories, getProducts } = useCatalog();
+  const { categories, getProducts, loading, error } = useCatalog();
   return (
     <section className="section container reveal">
       <SectionHead eyebrow="Familias olfativas" title="Categorías" />
-      <div className="cat-list">
+      {!loading && !error && (categories.length ? <div className="cat-list">
         {categories.map((c) => (
           <Link key={c.slug} to={`/categoria/${c.slug}`} className="cat-row">
             <h3>{c.name}</h3>
@@ -20,7 +20,7 @@ export default function CategoriesList() {
             <span className="label">{getProducts(c.slug).length} perfumes</span>
           </Link>
         ))}
-      </div>
+      </div> : <p style={{ textAlign: 'center', color: 'var(--vs-mute)' }}>Todavía no hay categorías.</p>)}
     </section>
   );
 }

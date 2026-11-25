@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import { useCatalog } from '../context/CatalogContext';
 
 export default function Footer() {
-  const { categories } = useCatalog();
+  const { categories, loading, error } = useCatalog();
   return (
     <footer className="footer">
       <div className="container">
@@ -13,7 +13,11 @@ export default function Footer() {
           </div>
           <div>
             <h4 className="label">Colección</h4>
-            <ul>{categories.map((c) => <li key={c.slug}><Link to={`/categoria/${c.slug}`}>{c.name}</Link></li>)}</ul>
+            {!loading && !error && (
+              categories.length
+                ? <ul>{categories.map((c) => <li key={c.slug}><Link to={`/categoria/${c.slug}`}>{c.name}</Link></li>)}</ul>
+                : <p style={{ color: 'var(--vs-mute)' }}>Sin categorías</p>
+            )}
           </div>
           <div>
             <h4 className="label">Tienda</h4>

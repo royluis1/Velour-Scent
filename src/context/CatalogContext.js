@@ -17,6 +17,9 @@ export function CatalogProvider({ children }) {
     Promise.all([getProducts(), getCategories()])
       .then(([loadedProducts, loadedCategories]) => {
         if (!active) return;
+        if (!Array.isArray(loadedProducts) || !Array.isArray(loadedCategories)) {
+          throw new Error('La respuesta del catálogo tiene un formato inválido.');
+        }
         setProducts(loadedProducts);
         setCategories(loadedCategories);
       })

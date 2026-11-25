@@ -1,6 +1,6 @@
 const adminTokenKey = 'vs_admin';
 
-class ApiError extends Error {
+export class ApiError extends Error {
   constructor(message, status) {
     super(message);
     this.name = 'ApiError';
@@ -8,7 +8,7 @@ class ApiError extends Error {
   }
 }
 
-async function request(path, options = {}, admin = false) {
+export async function request(path, options = {}, admin = false) {
   const headers = { Accept: 'application/json', ...options.headers };
   if (options.body) headers['Content-Type'] = 'application/json';
   if (admin) {
@@ -16,8 +16,25 @@ async function request(path, options = {}, admin = false) {
     if (token) headers.Authorization = `Bearer ${token}`;
   }
   const response = await fetch(path, { ...options, headers });
-  const data = await response.json();
-  if (!response.ok) throw new ApiError(data.error || 'No se pudo completar la solicitud.', response.status);
+  const text = await response.text();
+  if (response.status === 204 || !text.trim()) {
+    if (!response.ok) {
+      throw new ApiError(`El servidor respondió sin contenido (HTTP ${response.status}).`, response.status);
+    }
+    return null;
+  }
+  let data;
+  try {
+    data = JSON.parse(text);
+  } catch {
+    throw new ApiError(`El servidor devolvió una respuesta no JSON (HTTP ${response.status}).`, response.status);
+  }
+  if (!response.ok) {
+    const message = data && typeof data.error === 'string'
+      ? data.error
+      : `No se pudo completar la solicitud (HTTP ${response.status}).`;
+    throw new ApiError(message, response.status);
+  }
   return data;
 }
 
