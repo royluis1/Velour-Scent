@@ -1,0 +1,7 @@
+.home-cats{display:grid;grid-template-columns:repeat(3,1fr);border-block:1px solid var(--vs-line)}
+.home-cat{padding:80px 24px;text-align:center;transition:background var(--vs-ease)}
+.home-cat+.home-cat{border-left:1px solid var(--vs-line)}
+.home-cat h3{font-size:2rem;margin-bottom:14px;transition:color var(--vs-ease)}
+.home-cat:hover{background:var(--vs-velvet)}
+.home-cat:hover h3{color:var(--vs-gold)}
+@media (max-width:860px){.home-cats{grid-template-columns:1fr}.home-cat+.home-cat{border-left:0;border-top:1px solid var(--vs-line)}}

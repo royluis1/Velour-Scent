@@ -1,0 +1,25 @@
+/* Velour Scent — sistema de diseño (theme) */
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Jost:wght@300;400;500&display=swap');
+:root{
+  --vs-ink:#0E0B0C;--vs-velvet:#171112;--vs-velvet-2:#1F1718;
+  --vs-line:rgba(243,236,227,.12);--vs-line-strong:rgba(243,236,227,.22);
+  --vs-ivory:#F3ECE3;--vs-mute:#B2A596;--vs-faint:#7E7268;
+  --vs-gold:#C6A664;--vs-gold-soft:rgba(198,166,100,.14);--vs-wine:#5A2A33;
+  --vs-serif:'Cormorant Garamond',Georgia,serif;--vs-sans:'Jost',system-ui,sans-serif;
+  --vs-r:3px;--vs-gap:24px;--vs-pad:32px;--vs-maxw:1200px;--vs-ease:320ms cubic-bezier(.22,.61,.36,1);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--vs-ink);color:var(--vs-ivory);font-family:var(--vs-sans);font-weight:400;-webkit-font-smoothing:antialiased;letter-spacing:.01em}
+h1,h2,h3,.display{font-family:var(--vs-serif);font-weight:500;line-height:1.08;letter-spacing:.01em}
+h1{font-size:clamp(2.4rem,5vw,4rem)}h2{font-size:clamp(1.8rem,3vw,2.6rem)}
+.eyebrow,.nav a,.label,th{font-family:var(--vs-sans);text-transform:uppercase;letter-spacing:.22em;font-size:.72rem;font-weight:400;color:var(--vs-mute)}
+a{color:inherit;text-decoration:none}
+ul{list-style:none}
+hr,.rule{border:0;height:1px;background:var(--vs-line)}
+.btn{font-family:var(--vs-sans);text-transform:uppercase;letter-spacing:.18em;font-size:.74rem;padding:14px 28px;border:1px solid var(--vs-line-strong);background:transparent;color:var(--vs-ivory);border-radius:var(--vs-r);cursor:pointer;transition:all var(--vs-ease);display:inline-block;text-align:center}
+.btn:hover{border-color:var(--vs-gold);color:var(--vs-gold)}
+.btn--solid{background:var(--vs-ivory);color:var(--vs-ink);border-color:var(--vs-ivory)}
+.btn--solid:hover{background:var(--vs-gold);border-color:var(--vs-gold);color:var(--vs-ink)}
+.btn--block{display:block;width:100%}
+:focus-visible{outline:1px solid var(--vs-gold);outline-offset:2px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
