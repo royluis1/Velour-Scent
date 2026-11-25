@@ -53,3 +53,20 @@
   .admin__logout{margin:0}
   .admin table{display:block;overflow-x:auto}
 }
+
+/* Login */
+.login{min-height:100vh;display:grid;place-items:center;padding:24px;
+  background:radial-gradient(ellipse at 50% 30%,#1c1416 0%,var(--vs-ink) 70%)}
+.login__card{width:min(100%,420px);display:flex;flex-direction:column;align-items:center;
+  text-align:center;gap:18px;background:var(--vs-velvet);border:1px solid var(--vs-line);
+  border-radius:var(--vs-r);padding:56px 40px}
+.login__eyebrow{color:var(--vs-gold)}
+.login__brand{font-size:2.1rem;letter-spacing:.28em;text-transform:uppercase;margin:0}
+.login__hint{color:var(--vs-faint);font-size:.75rem;letter-spacing:.2em;text-transform:uppercase;margin:-6px 0 12px}
+.login__field{width:100%;display:flex;flex-direction:column;gap:10px;text-align:left}
+.login__input{width:100%;min-width:0;text-align:center;letter-spacing:.35em}
+.login__input::placeholder{letter-spacing:.2em;color:var(--vs-faint)}
+.login__error{color:#d98a8a;font-size:.8rem;letter-spacing:.03em;margin:0}
+.login__back{color:var(--vs-mute);font-size:.72rem;letter-spacing:.22em;text-transform:uppercase;
+  margin-top:8px;transition:color var(--vs-ease)}
+.login__back:hover{color:var(--vs-gold)}
