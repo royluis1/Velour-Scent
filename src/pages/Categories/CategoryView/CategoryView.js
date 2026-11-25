@@ -9,10 +9,11 @@ import './CategoryView.css';
 export default function CategoryView() {
   useReveal();
   const { slug } = useParams();
-  const { getCategory, getProducts } = useCatalog();
+  const { getCategory, getProducts, loading } = useCatalog();
   const cat = getCategory(slug);
-  useTitle(cat ? cat.name : 'Categoría no encontrada');
+  useTitle(cat ? cat.name : loading ? '' : 'Categoría no encontrada');
   if (!cat) {
+    if (loading) return <section className="section container"><p style={{ textAlign: 'center' }}>Cargando categoría...</p></section>;
     return (
       <section className="section container reveal" style={{ textAlign: 'center' }}>
         <h2>Esta categoría no existe</h2>

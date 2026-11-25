@@ -5,7 +5,7 @@ const emptyForm = { name: '', desc: '' };
 const slugify = (name) => name.normalize('NFD').replace(/[\u0300-\u036f]/g, '').trim().toLowerCase().replace(/\s+/g, '-');
 
 export default function AdminCategories() {
-  const { categories, products, addCategory, updateCategory, removeCategory } = useCatalog();
+  const { categories, products, loading, addCategory, updateCategory, removeCategory } = useCatalog();
   const [form, setForm] = useState(emptyForm);
   const [editingSlug, setEditingSlug] = useState(null);
   const [error, setError] = useState('');
@@ -16,7 +16,7 @@ export default function AdminCategories() {
     setError('');
   };
 
-  const submit = (event) => {
+  const submit = async (event) => {
     event.preventDefault();
     const slug = slugify(form.name);
     if (!form.name.trim() || !slug) {
@@ -28,17 +28,25 @@ export default function AdminCategories() {
       return;
     }
     const category = { name: form.name.trim(), slug, desc: form.desc.trim() };
-    if (editingSlug === null) addCategory(category);
-    else updateCategory(editingSlug, category);
-    setForm(emptyForm);
-    setEditingSlug(null);
-    setError('');
+    try {
+      if (editingSlug === null) await addCategory(category);
+      else await updateCategory(editingSlug, category);
+      setForm(emptyForm);
+      setEditingSlug(null);
+      setError('');
+    } catch (requestError) {
+      setError(requestError.message);
+    }
   };
 
-  const remove = (category) => {
+  const remove = async (category) => {
     if (!window.confirm(`¿Eliminar ${category.name}?`)) return;
-    if (!removeCategory(category.slug)) setError('No se puede eliminar: tiene productos');
-    else setError('');
+    try {
+      if (!await removeCategory(category.slug)) setError('No se puede eliminar: tiene productos');
+      else setError('');
+    } catch (requestError) {
+      setError(requestError.message);
+    }
   };
 
   return (
@@ -48,6 +56,7 @@ export default function AdminCategories() {
         <table>
           <thead><tr><th>Nombre</th><th>Slug</th><th>Productos</th><th>Acciones</th></tr></thead>
           <tbody>
+            {loading && <tr><td colSpan="4">Cargando categorías...</td></tr>}
             {categories.map((category) => (
               <tr key={category.slug}>
                 <td>{category.name}</td>

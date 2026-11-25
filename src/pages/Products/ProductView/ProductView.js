@@ -15,11 +15,12 @@ export default function ProductView() {
   const { add } = useCart();
   const [size, setSize] = useState(50);
   const [added, setAdded] = useState(false);
-  const { getProduct, getProducts, getCategory } = useCatalog();
+  const { getProduct, getProducts, getCategory, loading } = useCatalog();
   const p = getProduct(id);
-  useTitle(p ? p.name : 'Perfume no encontrado');
+  useTitle(p ? p.name : loading ? '' : 'Perfume no encontrado');
 
   if (!p) {
+    if (loading) return <section className="section container"><p style={{ textAlign: 'center' }}>Cargando perfume...</p></section>;
     return (
       <section className="section container reveal" style={{ textAlign: 'center' }}>
         <h2>Este perfume no existe</h2>

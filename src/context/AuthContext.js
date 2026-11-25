@@ -1,20 +1,25 @@
 import { createContext, useContext, useMemo, useState } from 'react';
+import { loginAdmin } from '../utils/api';
 
 const AuthContext = createContext(null);
 const KEY = 'vs_admin';
 
-// Barrera de demo: REACT_APP_* queda visible en el navegador; en producción validar en un backend.
+// La contraseña se valida en el backend; el navegador solo conserva un token temporal de sesión.
 export function AuthProvider({ children }) {
-  const [logged, setLogged] = useState(() => sessionStorage.getItem(KEY) === 'true');
+  const [logged, setLogged] = useState(() => Boolean(sessionStorage.getItem(KEY)));
 
   const value = useMemo(() => ({
     logged,
-    login: (password) => {
-      const expectedPassword = process.env.REACT_APP_ADMIN_PASSWORD;
-      if (!expectedPassword || password !== expectedPassword) return false;
-      sessionStorage.setItem(KEY, 'true');
-      setLogged(true);
-      return true;
+    login: async (password) => {
+      try {
+        const { token } = await loginAdmin(password);
+        sessionStorage.setItem(KEY, token);
+        setLogged(true);
+        return true;
+      } catch (error) {
+        if (error.status === 401) return false;
+        throw error;
+      }
     },
     logout: () => {
       sessionStorage.removeItem(KEY);

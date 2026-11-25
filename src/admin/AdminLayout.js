@@ -1,5 +1,6 @@
 import { NavLink, Link, Outlet } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { useCatalog } from '../context/CatalogContext';
 import './admin.css';
 
 const links = [
@@ -11,6 +12,7 @@ const links = [
 
 export default function AdminLayout() {
   const { logout } = useAuth();
+  const { error } = useCatalog();
   return (
     <div className="admin">
       <aside className="admin__side">
@@ -25,7 +27,10 @@ export default function AdminLayout() {
       </aside>
       <div className="admin__main">
         <header className="admin__top"><span className="eyebrow">Panel de administración</span></header>
-        <div className="admin__content"><Outlet /></div>
+        <div className="admin__content">
+          {error && <p role="alert" style={{ marginBottom: 24 }}>{error}</p>}
+          <Outlet />
+        </div>
       </div>
     </div>
   );

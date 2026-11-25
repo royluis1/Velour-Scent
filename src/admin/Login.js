@@ -6,13 +6,17 @@ export default function Login() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
 
-  const submit = (event) => {
+  const submit = async (event) => {
     event.preventDefault();
-    if (!login(password)) {
-      setError('Contraseña incorrecta');
-      return;
+    try {
+      if (!await login(password)) {
+        setError('Contraseña incorrecta');
+        return;
+      }
+      setError('');
+    } catch (requestError) {
+      setError(requestError.message);
     }
-    setError('');
   };
 
   return (

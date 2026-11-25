@@ -1,67 +1,112 @@
 import { createContext, useContext, useEffect, useMemo, useState } from 'react';
-import { categories as seedCategories, products as seedProducts } from '../utils/api';
+import {
+  createCategory, createProduct, deleteCategory, deleteProduct,
+  getCategories, getProducts, saveCategory, saveProduct,
+} from '../utils/api';
 
 const CatalogContext = createContext(null);
-const KEY = 'vs_catalog';
-
-// Persistencia de demo: en producción debe reemplazarse por una API/base de datos real.
-function readCatalog() {
-  try {
-    const stored = JSON.parse(localStorage.getItem(KEY));
-    if (stored && Array.isArray(stored.products) && Array.isArray(stored.categories)) return stored;
-  } catch {
-    return { products: seedProducts, categories: seedCategories };
-  }
-  return { products: seedProducts, categories: seedCategories };
-}
 
 export function CatalogProvider({ children }) {
-  const [catalog, setCatalog] = useState(readCatalog);
-  const { products, categories } = catalog;
+  const [products, setProducts] = useState([]);
+  const [categories, setCategories] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
 
   useEffect(() => {
-    localStorage.setItem(KEY, JSON.stringify(catalog));
-  }, [catalog]);
+    let active = true;
+    Promise.all([getProducts(), getCategories()])
+      .then(([loadedProducts, loadedCategories]) => {
+        if (!active) return;
+        setProducts(loadedProducts);
+        setCategories(loadedCategories);
+      })
+      .catch((requestError) => {
+        if (active) setError(requestError.message);
+      })
+      .finally(() => {
+        if (active) setLoading(false);
+      });
+    return () => { active = false; };
+  }, []);
 
   const value = useMemo(() => ({
     products,
     categories,
+    loading,
+    error,
     getProduct: (id) => products.find((product) => product.id === Number(id)),
     getProducts: (slug) => (slug ? products.filter((product) => product.category === slug) : products),
     getCategory: (slug) => categories.find((category) => category.slug === slug),
-    addProduct: (product) => {
-      const created = { ...product, id: Date.now() };
-      setCatalog((current) => ({ ...current, products: [...current.products, created] }));
-      return created;
+    addProduct: async (product) => {
+      try {
+        const created = await createProduct(product);
+        setProducts((current) => [...current, created]);
+        setError('');
+        return created;
+      } catch (requestError) {
+        setError(requestError.message);
+        throw requestError;
+      }
     },
-    updateProduct: (id, patch) => setCatalog((current) => ({
-      ...current,
-      products: current.products.map((product) => (product.id === id ? { ...product, ...patch } : product)),
-    })),
-    removeProduct: (id) => setCatalog((current) => ({
-      ...current,
-      products: current.products.filter((product) => product.id !== id),
-    })),
-    addCategory: (category) => setCatalog((current) => ({
-      ...current,
-      categories: [...current.categories, category],
-    })),
-    updateCategory: (slug, patch) => setCatalog((current) => ({
-      ...current,
-      categories: current.categories.map((category) => (category.slug === slug ? { ...category, ...patch } : category)),
-      products: current.products.map((product) => (
-        product.category === slug ? { ...product, category: patch.slug || slug } : product
-      )),
-    })),
-    removeCategory: (slug) => {
-      if (products.some((product) => product.category === slug)) return false;
-      setCatalog((current) => ({
-        ...current,
-        categories: current.categories.filter((category) => category.slug !== slug),
-      }));
-      return true;
+    updateProduct: async (id, patch) => {
+      try {
+        const updated = await saveProduct(id, patch);
+        setProducts((current) => current.map((product) => (product.id === id ? updated : product)));
+        setError('');
+        return updated;
+      } catch (requestError) {
+        setError(requestError.message);
+        throw requestError;
+      }
     },
-  }), [products, categories]);
+    removeProduct: async (id) => {
+      try {
+        await deleteProduct(id);
+        setProducts((current) => current.filter((product) => product.id !== id));
+        setError('');
+      } catch (requestError) {
+        setError(requestError.message);
+        throw requestError;
+      }
+    },
+    addCategory: async (category) => {
+      try {
+        const created = await createCategory(category);
+        setCategories((current) => [...current, created]);
+        setError('');
+        return created;
+      } catch (requestError) {
+        setError(requestError.message);
+        throw requestError;
+      }
+    },
+    updateCategory: async (slug, patch) => {
+      try {
+        const updated = await saveCategory(slug, patch);
+        setCategories((current) => current.map((category) => (category.slug === slug ? updated : category)));
+        setProducts((current) => current.map((product) => (
+          product.category === slug ? { ...product, category: updated.slug } : product
+        )));
+        setError('');
+        return updated;
+      } catch (requestError) {
+        setError(requestError.message);
+        throw requestError;
+      }
+    },
+    removeCategory: async (slug) => {
+      try {
+        await deleteCategory(slug);
+        setCategories((current) => current.filter((category) => category.slug !== slug));
+        setError('');
+        return true;
+      } catch (requestError) {
+        if (requestError.status === 409) return false;
+        setError(requestError.message);
+        throw requestError;
+      }
+    },
+  }), [products, categories, loading, error]);
 
   return <CatalogContext.Provider value={value}>{children}</CatalogContext.Provider>;
 }

@@ -8,7 +8,7 @@ const emptyForm = {
 };
 
 export default function AdminProducts() {
-  const { products, categories, addProduct, updateProduct, removeProduct } = useCatalog();
+  const { products, categories, loading, addProduct, updateProduct, removeProduct } = useCatalog();
   const [form, setForm] = useState(emptyForm);
   const [editingId, setEditingId] = useState(null);
   const [showForm, setShowForm] = useState(false);
@@ -28,7 +28,7 @@ export default function AdminProducts() {
     setError('');
   };
 
-  const submit = (event) => {
+  const submit = async (event) => {
     event.preventDefault();
     const price = Number(form.price);
     if (!form.name.trim() || !Number.isFinite(price) || price <= 0) {
@@ -36,23 +36,35 @@ export default function AdminProducts() {
       return;
     }
     const product = { ...form, name: form.name.trim(), price };
-    if (editingId === null) addProduct(product);
-    else updateProduct(editingId, product);
-    setForm(emptyForm);
-    setEditingId(null);
-    setShowForm(false);
-    setError('');
+    try {
+      if (editingId === null) await addProduct(product);
+      else await updateProduct(editingId, product);
+      setForm(emptyForm);
+      setEditingId(null);
+      setShowForm(false);
+      setError('');
+    } catch (requestError) {
+      setError(requestError.message);
+    }
   };
 
-  const remove = (product) => {
-    if (window.confirm(`¿Eliminar ${product.name}?`)) removeProduct(product.id);
+  const remove = async (product) => {
+    if (!window.confirm(`¿Eliminar ${product.name}?`)) return;
+    try {
+      await removeProduct(product.id);
+      setError('');
+    } catch (requestError) {
+      setError(requestError.message);
+    }
   };
 
   return (
     <>
       <h1>Productos</h1>
       <button className="primary" type="button" onClick={() => { setEditingId(null); setForm(emptyForm); setError(''); setShowForm(true); }}>Nuevo producto</button>
-      {!products.length ? (
+      {loading ? (
+        <p style={{ marginTop: 24 }}>Cargando productos...</p>
+      ) : !products.length ? (
         <p style={{ marginTop: 24 }}>Todavía no hay productos. Creá el primero con el botón de arriba.</p>
       ) : (
         <div style={{ overflowX: 'auto', marginTop: 24 }}>
