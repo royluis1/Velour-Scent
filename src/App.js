@@ -6,6 +6,7 @@ import ProductsList from './pages/Products/ProductsList/ProductsList';
 import ProductView from './pages/Products/ProductView/ProductView';
 import CategoriesList from './pages/Categories/CategoriesList/CategoriesList';
 import CategoryView from './pages/Categories/CategoryView/CategoryView';
+import Bolsa from './pages/Bolsa/Bolsa';
 
 export default function App() {
   return (
@@ -16,6 +17,7 @@ export default function App() {
         <Route path="/perfume/:id" element={<ProductView />} />
         <Route path="/categorias" element={<CategoriesList />} />
         <Route path="/categoria/:slug" element={<CategoryView />} />
+        <Route path="/bolsa" element={<Bolsa />} />
       </Route>
       {/* El dashboard admin va aparte bajo /admin/* */}
     </Routes>

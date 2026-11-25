@@ -21,3 +21,7 @@ export const getCategory = (slug) => categories.find((c) => c.slug === slug);
 export const getProducts = (slug) => (slug ? products.filter((p) => p.category === slug) : products);
 export const getProduct = (id) => products.find((p) => p.id === Number(id));
 export const formatPrice = (n) => `USD ${n}`;
+
+// Foto del hero (ej: '/img/hero.jpg' en public/img/). Con null se usa el fondo degradado.
+export const heroImage = null;
+// Fotos de producto: agregá image: '/img/noir-velours.jpg' a cada producto de arriba.

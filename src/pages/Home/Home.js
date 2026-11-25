@@ -1,16 +1,18 @@
+import useReveal from '../../hooks/useReveal';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { getProducts, getCategories } from '../../utils/api';
+import { getProducts, getCategories, heroImage } from '../../utils/api';
 import ProductCard from '../../components/ProductCard';
 import SectionHead from '../../components/SectionHead';
 import './Home.css';
 
 export default function Home() {
+  useReveal();
   const [email, setEmail] = useState('');
   const [sent, setSent] = useState(false);
   return (
     <>
-      <section className="hero">
+      <section className={`hero${heroImage ? ' hero--img' : ''}`} style={heroImage ? { backgroundImage: `url(${heroImage})` } : undefined}>
         <div className="hero__content">
           <span className="eyebrow">Nueva colección</span>
           <h1>El perfume es la forma más íntima de presencia.</h1>
@@ -22,16 +24,16 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="section container">
+      <section className="section container reveal">
         <SectionHead eyebrow="Selección" title="Esencias destacadas" />
         <div className="grid">{getProducts().slice(0, 4).map((p) => <ProductCard key={p.id} product={p} />)}</div>
       </section>
 
-      <section className="section container manifesto">
+      <section className="section container manifesto reveal">
         <p>No perfumamos la piel. Perfumamos el momento en que alguien se da vuelta.</p>
       </section>
 
-      <section className="container home-cats">
+      <section className="container home-cats reveal">
         {getCategories().map((c) => (
           <Link key={c.slug} to={`/categoria/${c.slug}`} className="home-cat">
             <h3>{c.name}</h3>
@@ -40,7 +42,7 @@ export default function Home() {
         ))}
       </section>
 
-      <section className="section newsletter">
+      <section className="section newsletter reveal">
         <div className="container">
           <SectionHead eyebrow="Cartas privadas" title="Recibí las novedades primero" />
           {sent ? (

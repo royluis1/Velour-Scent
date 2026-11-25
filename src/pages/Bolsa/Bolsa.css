@@ -1,0 +1,14 @@
+.bag{border-top:1px solid var(--vs-line)}
+.bag__row{display:grid;grid-template-columns:88px 1fr auto auto auto;gap:24px;align-items:center;padding:24px 0;border-bottom:1px solid var(--vs-line)}
+.bag__media{aspect-ratio:4/5;background:var(--vs-velvet);border:1px solid var(--vs-line);display:grid;place-items:center;overflow:hidden;border-radius:var(--vs-r)}
+.bag__media img{width:100%;height:100%;object-fit:cover}
+.bag__info h3{font-family:var(--vs-serif);font-size:1.3rem;margin-bottom:6px}
+.bag__qty{display:flex;align-items:center;gap:14px}
+.bag__qty button{background:none;border:1px solid var(--vs-line-strong);color:var(--vs-ivory);width:30px;height:30px;cursor:pointer;border-radius:var(--vs-r)}
+.bag__qty button:hover{border-color:var(--vs-gold);color:var(--vs-gold)}
+.bag__price{color:var(--vs-gold);min-width:92px;text-align:right}
+.bag__remove{background:none;border:0;color:var(--vs-faint);font-size:1.4rem;cursor:pointer}
+.bag__remove:hover{color:var(--vs-ivory)}
+.bag__foot{display:flex;justify-content:space-between;align-items:baseline;padding-top:28px}
+.bag__total{font-family:var(--vs-serif);font-size:1.8rem;color:var(--vs-gold)}
+@media(max-width:620px){.bag__row{grid-template-columns:64px 1fr auto;row-gap:10px}.bag__qty{grid-column:2}.bag__price{grid-column:3;grid-row:1}.bag__remove{grid-column:3;grid-row:2;justify-self:end}}

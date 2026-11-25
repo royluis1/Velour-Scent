@@ -1,11 +1,13 @@
+import useReveal from '../../../hooks/useReveal';
 import { Link } from 'react-router-dom';
 import { getCategories, getProducts } from '../../../utils/api';
 import SectionHead from '../../../components/SectionHead';
 import './CategoriesList.css';
 
 export default function CategoriesList() {
+  useReveal();
   return (
-    <section className="section container">
+    <section className="section container reveal">
       <SectionHead eyebrow="Familias olfativas" title="Categorías" />
       <div className="cat-list">
         {getCategories().map((c) => (

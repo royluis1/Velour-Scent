@@ -69,3 +69,24 @@
   .header__in .logo{font-size:1.2rem;letter-spacing:.2em}
   .header__in .nav{display:none}
 }
+
+/* Menú mobile (drawer) */
+.burger{display:none;background:none;border:0;color:var(--vs-ivory);font-size:1.3rem;cursor:pointer;padding:4px}
+.drawer{position:fixed;inset:0;z-index:100}
+.drawer__backdrop{position:absolute;inset:0;background:rgba(0,0,0,.6)}
+.drawer__panel{position:absolute;top:0;left:0;height:100%;width:min(78vw,320px);background:var(--vs-velvet);border-right:1px solid var(--vs-line);display:flex;flex-direction:column;gap:28px;padding:88px 32px 32px;font-family:var(--vs-serif);font-size:1.5rem}
+.drawer__panel a:hover{color:var(--vs-gold)}
+.drawer__close{position:absolute;top:24px;right:24px;background:none;border:0;color:var(--vs-mute);font-size:1.7rem;cursor:pointer}
+
+/* Reveal al scrollear */
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .9s var(--vs-ease),transform .9s var(--vs-ease)}
+.reveal.in{opacity:1;transform:none}
+@media(prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none}}
+
+/* Header responsive: burger | logo | bolsa */
+@media (max-width:860px){
+  .burger{display:block}
+  .header__in{grid-template-columns:auto 1fr auto;gap:12px}
+  .header__in .nav{display:none}
+  .header__in .logo{justify-self:center;font-size:1.2rem;letter-spacing:.2em}
+}

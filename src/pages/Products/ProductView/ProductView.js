@@ -1,20 +1,23 @@
+import useReveal from '../../../hooks/useReveal';
 import { useState } from 'react';
-import { Link, useParams, useOutletContext } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
+import { useCart } from '../../../context/CartContext';
 import { getProduct, getProducts, getCategory, sizes, formatPrice } from '../../../utils/api';
 import ProductCard from '../../../components/ProductCard';
 import SectionHead from '../../../components/SectionHead';
 import './ProductView.css';
 
 export default function ProductView() {
+  useReveal();
   const { id } = useParams();
-  const { addToCart } = useOutletContext();
+  const { add } = useCart();
   const [size, setSize] = useState(50);
   const [added, setAdded] = useState(false);
   const p = getProduct(id);
 
   if (!p) {
     return (
-      <section className="section container" style={{ textAlign: 'center' }}>
+      <section className="section container reveal" style={{ textAlign: 'center' }}>
         <h2>Este perfume no existe</h2>
         <p style={{ margin: '24px 0 32px', color: 'var(--vs-mute)' }}>Volvé a la colección para ver los disponibles.</p>
         <Link to="/coleccion" className="btn">Ver colección</Link>
@@ -25,7 +28,7 @@ export default function ProductView() {
   const related = getProducts(p.category).filter((x) => x.id !== p.id).slice(0, 3);
   return (
     <>
-      <section className="section container detail">
+      <section className="section container detail reveal">
         <div className="detail__media">
           {p.image ? <img src={p.image} alt={p.name} /> : <span className="mono">{p.name[0]}</span>}
         </div>
@@ -42,13 +45,13 @@ export default function ProductView() {
           <div className="sizes">
             {sizes.map((s) => <button key={s} className={`size ${size === s ? 'active' : ''}`} onClick={() => setSize(s)}>{s} ml</button>)}
           </div>
-          <button className="btn btn--solid btn--block" onClick={() => { addToCart(); setAdded(true); }}>
+          <button className="btn btn--solid btn--block" onClick={() => { add(p, size); setAdded(true); }}>
             {added ? 'Añadido a la bolsa' : 'Añadir a la bolsa'}
           </button>
         </div>
       </section>
       {related.length > 0 && (
-        <section className="section container">
+        <section className="section container reveal">
           <SectionHead title="También te puede gustar" />
           <div className="grid">{related.map((x) => <ProductCard key={x.id} product={x} />)}</div>
         </section>
