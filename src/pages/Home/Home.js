@@ -17,6 +17,9 @@ export default function Home() {
   return (
     <>
       <section className={`hero${heroImage ? ' hero--img' : ''}`} style={heroImage ? { backgroundImage: `url(${heroImage})` } : undefined}>
+        <video className="hero__video" autoPlay muted loop playsInline aria-hidden="true" tabIndex="-1">
+          <source src="/img/perfume.mp4" type="video/mp4" />
+        </video>
         <div className="hero__content">
           <span className="eyebrow">Nueva colección</span>
           <h1>El perfume es la forma más íntima de presencia.</h1>

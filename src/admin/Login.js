@@ -22,8 +22,13 @@ export default function Login() {
     }
   };
 
-  return (
+   return (
     <main className="login">
+      <video className="login__video" autoPlay muted loop playsInline aria-hidden="true" tabIndex="-1">
+        <source src="/img/chica.mp4" type="video/mp4" />
+      </video>
+      <div className="login__overlay" />
+
       <form onSubmit={submit} className="login__card">
         <span className="eyebrow login__eyebrow">Acceso privado</span>
         <h1 className="login__brand">Velour Scent</h1>
