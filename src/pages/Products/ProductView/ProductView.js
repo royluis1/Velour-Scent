@@ -1,23 +1,34 @@
 import useReveal from '../../../hooks/useReveal';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { useCart } from '../../../context/CartContext';
-import { sizes, formatPrice } from '../../../utils/api';
 import { useCatalog } from '../../../context/CatalogContext';
 import useTitle from '../../../hooks/useTitle';
 import ProductCard from '../../../components/ProductCard';
 import ProductImage from '../../../components/ProductImage';
 import SectionHead from '../../../components/SectionHead';
+import SplitText from '../../../components/SplitText';
+import PriceOdometer from '../../../components/PriceOdometer';
 import './ProductView.css';
+
+function defaultVariant(variants) {
+  return variants.find((variant) => variant.featured && variant.stock > 0) ||
+    [...variants].filter((variant) => variant.stock > 0).sort((a, b) => a.ml - b.ml)[0] ||
+    variants.find((variant) => variant.featured) ||
+    [...variants].sort((a, b) => a.ml - b.ml)[0];
+}
 
 export default function ProductView() {
   useReveal();
   const { id } = useParams();
   const { add } = useCart();
-  const [size, setSize] = useState(50);
-  const [added, setAdded] = useState(false);
+  const [selection, setSelection] = useState({ productId: null, ml: null });
+  const mediaRef = useRef(null);
   const { getProduct, getProducts, getCategory, loading, error } = useCatalog();
   const p = getProduct(id);
+  const variants = p
+    ? (p.variants?.length ? p.variants : [{ ml: 100, price: p.price, stock: 10 }])
+    : [];
   useTitle(p ? p.name : loading ? '' : error ? 'Error al cargar perfume' : 'Perfume no encontrado');
 
   if (loading || error) return null;
@@ -31,6 +42,8 @@ export default function ProductView() {
     );
   }
 
+  const selectedMl = selection.productId === p.id ? selection.ml : null;
+  const selectedVariant = variants.find((variant) => Number(variant.ml) === Number(selectedMl)) || defaultVariant(variants);
   const related = getProducts(p.category).filter((x) => x.id !== p.id).slice(0, 3);
   const facts = [
     { label: 'Concentración', value: p.concentration },
@@ -42,13 +55,13 @@ export default function ProductView() {
   return (
     <>
       <section className="section container detail reveal">
-        <div className="detail__media">
+        <div className="detail__media" ref={mediaRef}>
           <ProductImage image={p.image} name={p.name} />
         </div>
         <div className="detail__info">
           <Link to={`/categoria/${p.category}`} className="eyebrow">{getCategory(p.category)?.name}</Link>
-          <h1>{p.name}</h1>
-          <p className="detail__price">{formatPrice(p.price)}</p>
+          <h1><SplitText key={p.id} text={p.name} /></h1>
+          <p className="detail__price"><PriceOdometer key={p.id} value={selectedVariant.price} /></p>
           <p className="detail__desc">{p.desc}</p>
           <div className="notes">
             <div><span className="label">Salida</span>{p.notes.top}</div>
@@ -74,11 +87,30 @@ export default function ProductView() {
               <p>{p.ingredients}</p>
             </section>
           )}
-          <div className="sizes">
-            {sizes.map((s) => <button key={s} className={`size ${size === s ? 'active' : ''}`} onClick={() => setSize(s)}>{s} ml</button>)}
+          <div className="sizes" role="group" aria-label="Elegí el tamaño">
+            {variants.map((variant) => (
+              <button
+                key={variant.ml}
+                type="button"
+                className={`size${Number(selectedVariant.ml) === Number(variant.ml) ? ' active' : ''}${variant.stock < 1 ? ' size--out' : ''}`}
+                aria-pressed={Number(selectedVariant.ml) === Number(variant.ml)}
+                disabled={variant.stock < 1}
+                onClick={() => setSelection({ productId: p.id, ml: Number(variant.ml) })}
+              >
+                {variant.ml} ml
+                {variant.stock < 1 && <span className="size__stock">Sin stock</span>}
+              </button>
+            ))}
           </div>
-          <button className="btn btn--solid btn--block" onClick={() => { add(p, size); setAdded(true); }}>
-            {added ? 'Añadido a la bolsa' : 'Añadir a la bolsa'}
+          <button
+            className="btn btn--solid btn--block detail__add"
+            type="button"
+            disabled={selectedVariant.stock < 1}
+            onClick={() => add(p, selectedVariant, mediaRef.current)}
+          >
+            {selectedVariant.stock < 1
+              ? 'Sin stock'
+              : <>AGREGAR · <PriceOdometer value={selectedVariant.price} /></>}
           </button>
         </div>
       </section>

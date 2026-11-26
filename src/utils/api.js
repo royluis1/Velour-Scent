@@ -59,8 +59,7 @@ export const saveCategory = (slug, patch) =>
 export const deleteCategory = (slug) =>
   request(`/api/categories?slug=${encodeURIComponent(slug)}`, { method: 'DELETE' }, true);
 
-export const sizes = [30, 50, 100];
-export const formatPrice = (n) => `USD ${n}`;
+export const formatPrice = (n) => `$ ${Math.round(Number(n) || 0).toLocaleString('es-AR')}`;
 
 // Fotos previstas en public/img/: hero.jpg, noir-velours.jpg, maison-santal.jpg,
 // eclat-de-jasmin.jpg, ombre-vetiver.jpg, rose-cendree.jpg y ambre-sombre.jpg.

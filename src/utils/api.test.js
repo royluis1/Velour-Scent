@@ -1,10 +1,14 @@
-import { request } from './api';
+import { formatPrice, request } from './api';
 
 describe('API request responses', () => {
   const originalFetch = global.fetch;
 
   afterEach(() => {
     global.fetch = originalFetch;
+  });
+
+  it('formats prices using Argentine thousands separators', () => {
+    expect(formatPrice(85000)).toBe('$ 85.000');
   });
 
   it('returns null for a 204 or an empty successful response', async () => {

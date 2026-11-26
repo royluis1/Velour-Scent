@@ -14,7 +14,7 @@ export default function Header() {
           <NavLink to="/categorias">Categorías</NavLink>
         </nav>
         <Link to="/" className="logo">Velour Scent</Link>
-        <div className="header__right"><Link to="/bolsa">Bolsa ({count})</Link></div>
+        <div className="header__right"><Link to="/bolsa" data-cart-target>Bolsa ({count})</Link></div>
       </div>
       {open && (
         <div className="drawer" role="dialog" aria-modal="true" onClick={() => setOpen(false)}>

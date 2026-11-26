@@ -9,6 +9,8 @@
 .bag__price{color:var(--vs-gold);min-width:92px;text-align:right}
 .bag__remove{background:none;border:0;color:var(--vs-faint);font-size:1.4rem;cursor:pointer}
 .bag__remove:hover{color:var(--vs-ivory)}
+.bag__qty button:disabled{opacity:.35;cursor:not-allowed}
+.bag__price .price-odometer,.bag__total .price-odometer{color:inherit}
 .bag__foot{display:flex;justify-content:space-between;align-items:baseline;padding-top:28px}
 .bag__total{font-family:var(--vs-serif);font-size:1.8rem;color:var(--vs-gold)}
 @media(max-width:620px){.bag__row{grid-template-columns:64px 1fr auto;row-gap:10px}.bag__qty{grid-column:2}.bag__price{grid-column:3;grid-row:1}.bag__remove{grid-column:3;grid-row:2;justify-self:end}}

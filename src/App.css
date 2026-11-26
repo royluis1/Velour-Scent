@@ -57,6 +57,11 @@
 .sizes{display:flex;gap:12px;margin-bottom:32px}
 .size{padding:12px 20px;border:1px solid var(--vs-line-strong);background:none;color:var(--vs-ivory);cursor:pointer;border-radius:var(--vs-r);transition:all var(--vs-ease);font-family:var(--vs-sans)}
 .size:hover,.size.active{border-color:var(--vs-gold);color:var(--vs-gold)}
+.size:disabled{cursor:not-allowed;color:var(--vs-faint);border-color:var(--vs-line);text-decoration:line-through}
+.size__stock{display:block;font-size:.62rem;letter-spacing:.04em;text-decoration:none}
+.detail__add:disabled{opacity:.5;cursor:not-allowed}
+.detail__add .price-odometer{font:inherit;letter-spacing:inherit}
+.detail__price .price-odometer{font-variant-numeric:tabular-nums}
 .manifesto{max-width:720px;margin-inline:auto;text-align:center}
 .manifesto p{font-family:var(--vs-serif);font-size:clamp(1.5rem,3vw,2.2rem);line-height:1.4;font-style:italic}
 .newsletter{border-top:1px solid var(--vs-line);text-align:center}
@@ -66,6 +71,7 @@
 .input::placeholder{color:var(--vs-faint)}
 .footer{border-top:1px solid var(--vs-line);padding-block:72px 40px}
 .footer__cols{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:48px;margin-bottom:56px}
+.footer__cols>*{min-width:0}
 .footer__cols h4{margin-bottom:20px}
 .footer__cols li{margin-bottom:12px;color:var(--vs-mute);font-size:.9rem}
 .footer__cols a:hover{color:var(--vs-gold)}
@@ -73,12 +79,13 @@
 .footer__legal{color:var(--vs-faint);font-size:.75rem;text-align:center}
 @media (max-width:860px){
   .detail{grid-template-columns:1fr;gap:40px}
-  .footer__cols{grid-template-columns:1fr 1fr}
+  .footer__cols{grid-template-columns:repeat(2,minmax(0,1fr));gap:28px 20px}
   .nav{gap:18px}
   .header__in{grid-template-columns:auto 1fr;gap:16px}
   .header__in .logo{font-size:1.2rem;letter-spacing:.2em}
   .header__in .nav{display:none}
 }
+.footer__cols li{overflow-wrap:anywhere}
 
 /* Menú mobile (drawer) */
 .burger{display:none;background:none;border:0;color:var(--vs-ivory);font-size:1.3rem;cursor:pointer;padding:4px}
@@ -93,6 +100,13 @@
 .reveal.in{opacity:1;transform:none}
 @media(prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none}}
 @media(prefers-reduced-motion:reduce){.hero__video{display:none}}
+@media(max-width:620px){
+  :root{--vs-pad:20px}
+  .detail{gap:28px}
+  .detail__info h1{font-size:clamp(2rem,10vw,3rem)}
+  .sizes{gap:8px;flex-wrap:wrap}
+  .size{padding:10px 12px}
+}
 
 /* Header responsive: burger | logo | bolsa */
 @media (max-width:860px){

@@ -1,0 +1,98 @@
+:root {
+  --vs-motion-duration: .58s;
+  --vs-motion-ease: cubic-bezier(.2,.7,.2,1);
+  --vs-odometer-duration: .72s;
+  --vs-odometer-ease: cubic-bezier(.2,.82,.22,1);
+  --vs-cart-flight-duration: 850ms;
+  --vs-cart-flight-ease: cubic-bezier(.2,.7,.3,1);
+  --vs-cart-flight-arc: 140px;
+  --vs-cart-bump-duration: .45s;
+  --vs-cart-bump-ease: ease;
+  --vs-toast-duration: .25s;
+}
+
+.split-text { display: inline; }
+.split-text__word,
+.split-text__space { display: inline-block; vertical-align: bottom; }
+.split-text__word { overflow: hidden; padding-bottom: .08em; margin-bottom: -.08em; }
+.split-text__letter {
+  display: inline-block;
+  animation: letter-in var(--vs-motion-duration) var(--vs-motion-ease) both;
+  animation-delay: calc(var(--i) * 22ms);
+}
+@keyframes letter-in {
+  from { transform: translateY(110%); opacity: .15; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+.price-odometer {
+  display: inline-flex;
+  align-items: baseline;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+.price-odometer__currency { flex: none; }
+.price-odometer__digits {
+  display: inline-flex;
+  flex-direction: row-reverse;
+  justify-content: flex-start;
+  overflow: hidden;
+  flex: none;
+  transition: width var(--vs-odometer-duration) var(--vs-odometer-ease);
+}
+.price-odometer__digit {
+  display: inline-block;
+  position: relative;
+  flex: none;
+  width: .61em;
+  height: 1.15em;
+  overflow: hidden;
+  line-height: 1.15;
+}
+.price-odometer__strip {
+  display: flex;
+  flex-direction: column;
+  will-change: transform;
+  transition: transform var(--vs-odometer-duration) var(--vs-odometer-ease);
+}
+.price-odometer__strip > span { display: block; flex: none; height: 1.15em; }
+.price-odometer__separator { display: inline-block; flex: none; width: .28em; }
+
+.cart-flight {
+  position: fixed;
+  z-index: 99;
+  pointer-events: none;
+  object-fit: contain;
+  clip-path: circle(48%);
+  filter: drop-shadow(0 10px 8px #0005);
+}
+.cart-bump { animation: var(--vs-cart-bump-duration) var(--vs-cart-bump-ease) cart-bump; }
+@keyframes cart-bump {
+  50% { transform: scale(1.27); color: var(--vs-gold); }
+}
+.store-toast {
+  position: fixed;
+  z-index: 120;
+  right: max(20px, env(safe-area-inset-right));
+  bottom: max(20px, env(safe-area-inset-bottom));
+  max-width: min(420px, calc(100vw - 32px));
+  padding: 16px 20px;
+  border: 1px solid var(--vs-line-strong);
+  border-radius: var(--vs-r);
+  background: var(--vs-velvet);
+  color: var(--vs-ivory);
+  opacity: 0;
+  transform: translateY(16px);
+  pointer-events: none;
+  transition: opacity var(--vs-toast-duration) ease, transform var(--vs-toast-duration) ease;
+}
+.store-toast--visible { opacity: 1; transform: translateY(0); }
+
+@media (prefers-reduced-motion: reduce) {
+  .split-text__letter { animation: none; }
+  .price-odometer__digits,
+  .price-odometer__strip { transition: none; }
+  .cart-flight { display: none; }
+  .cart-bump { animation: none; }
+  .store-toast { transition: none; }
+}

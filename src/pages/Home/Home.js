@@ -6,6 +6,7 @@ import { useCatalog } from '../../context/CatalogContext';
 import useTitle from '../../hooks/useTitle';
 import ProductCard from '../../components/ProductCard';
 import SectionHead from '../../components/SectionHead';
+import SplitText from '../../components/SplitText';
 import './Home.css';
 
 export default function Home() {
@@ -22,7 +23,7 @@ export default function Home() {
         </video>
         <div className="hero__content">
           <span className="eyebrow">Nueva colección</span>
-          <h1>El perfume es la forma más íntima de presencia.</h1>
+          <h1><SplitText text="El perfume es la forma más íntima de presencia." /></h1>
           <p>Seis esencias hechas para la noche: maderas oscuras, flores blancas y ámbar sobre terciopelo.</p>
           <div className="hero__cta">
             <Link to="/coleccion" className="btn btn--solid">Descubrir colección</Link>
